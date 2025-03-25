@@ -8,7 +8,7 @@ document.getElementById('create-note-btn')
 
             fetch("http://localhost:3000/notes", {
                 method: "POST",
-                headers: { "Content-Type": "json" },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(note)
             })
             .then(response => response.json())
