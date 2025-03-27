@@ -31,10 +31,14 @@ document.addEventListener("DOMContentLoaded", () => {
     createNoteBtn.addEventListener("click", () => {
         const title = prompt("Enter note title:");
         const description = prompt("Enter note description:");
-
+    
         if (title && description) {
             const note = { title, description };
-
+    
+          
+            const tempNoteId = Date.now(); 
+            renderNote({ id: tempNoteId, title, description });
+    
             fetch("https://note-app-ecru-xi.vercel.app/notes", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -43,15 +47,23 @@ document.addEventListener("DOMContentLoaded", () => {
             .then(response => response.json())
             .then(newNote => {
                 console.log("Note added:", newNote);
-                
+    
                
-                fetchNotes();
+                const tempNote = document.querySelector(`[data-id="${tempNoteId}"]`);
+                if (tempNote) {
+                    tempNote.setAttribute("data-id", newNote.id); 
+                }
             })
-            .catch(error => console.error("Error adding note:", error));
+            .catch(error => {
+                console.error("Error adding note:", error);
+              
+            });
         } else {
             alert("Enter title and description.");
         }
     });
+    
+
 
    
     function renderNote(note) {
@@ -59,24 +71,26 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error("Error: 'notes-container' not found.");
             return;
         }
-
+    
         const noteDiv = document.createElement("div");
         noteDiv.classList.add("note");
         noteDiv.setAttribute("data-id", note.id);
-
+    
         noteDiv.innerHTML = `
             <h2 class="title">${note.title}</h2>
             <h3 class="description">${note.description}</h3>
             <button class="edit-btn">Edit</button>
             <button class="delete-btn">Delete</button>
         `;
-
-        notesContainer.appendChild(noteDiv);
-
+    
+        
+        notesContainer.prepend(noteDiv);
+    
         
         noteDiv.querySelector('.edit-btn').addEventListener('click', () => editNote(noteDiv, note.id));
         noteDiv.querySelector('.delete-btn').addEventListener('click', () => deleteNote(noteDiv, note.id));
     }
+    
 
    
     function editNote(noteDiv, noteId) {
