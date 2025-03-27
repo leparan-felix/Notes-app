@@ -6,7 +6,7 @@ document.getElementById('create-note-btn')
         if (title && description) {
             const note = { title, description };
 
-            fetch("http://localhost:3000/notes", {
+            fetch("https://note-app-ecru-xi.vercel.app/notes", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(note)
@@ -23,7 +23,7 @@ document.getElementById('create-note-btn')
     });
 
 
-fetch("http://localhost:3000/notes")
+fetch("https://note-app-ecru-xi.vercel.app/notes")
     .then(response => response.json())
     .then(notes => {
         console.log("Fetched notes:", notes);
@@ -69,7 +69,7 @@ function editNote(noteDiv, noteId) {
     const newDescription = prompt("Edit description:", noteDiv.querySelector('.description').innerText);
 
     if (newTitle && newDescription) {
-        fetch(`http://localhost:3000/notes/${noteId}`, {
+        fetch(`https://note-app-ecru-xi.vercel.app/notes/${noteId}`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ title: newTitle, description: newDescription })
@@ -84,7 +84,7 @@ function editNote(noteDiv, noteId) {
 }
 
 function deleteNote(noteDiv, noteId) {
-    fetch(`http://localhost:3000/notes/${noteId}`, {
+    fetch(`https://note-app-ecru-xi.vercel.app/notes/${noteId}`, {
         method: "DELETE"
     })
     .then(() => noteDiv.remove())
